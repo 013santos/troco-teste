@@ -6,8 +6,8 @@
   <style>
     body { font-family: 'Segoe UI', sans-serif; text-align: center; padding: 10px; background: #121212; color: white; margin: 0; overflow-x: hidden; }
     .container { max-width: 450px; margin: auto; }
-    .menu-grid { display: grid; grid-template-columns: 1fr; gap: 12px; padding: 20px; }
-    .btn-linha { padding: 22px; font-size: 18px; font-weight: bold; border-radius: 12px; border: none; background: #ffc107; color: #000; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4); }
+    .menu-grid { display: grid; grid-template-columns: 1fr; gap: 15px; padding: 30px 20px; }
+    .btn-linha { padding: 30px; font-size: 24px; font-weight: bold; border-radius: 15px; border: none; background: #ffc107; color: #000; box-shadow: 0 6px 10px rgba(0, 0, 0, 0.5); }
     #tela-calculadora { display: none; padding: 5px; }
     .grid-tarifas { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
     .btn-tarifa { padding: 12px 5px; border-radius: 8px; border: 2px solid #333; background: #333; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 65px; }
@@ -25,7 +25,7 @@
     .resultado-box { background: #28a745; padding: 15px; border-radius: 15px; min-height: 95px; }
     #resultado { font-size: 55px; font-weight: bold; margin-top: 5px; }
     .controles-navegacao { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
-    .btn-nav { background: #444; border: none; color: white; padding: 12px; border-radius: 5px; font-weight: bold; font-size: 12px; }
+    .btn-nav { background: #444; border: none; color: white; padding: 12px; border-radius: 5px; font-weight: bold; font-size: 14px; }
     .btn-outra { background: #007bff; color: white; }
     .label { font-size: 11px; opacity: 0.8; text-transform: uppercase; margin-bottom: 4px; }
   </style>
@@ -34,21 +34,20 @@
 <body>
   <div class="container">
     <div id="tela-menu">
-      <h2 style="margin-top: 20px; color: #ffc107;">🚌 Troco Rodoviário</h2>
+      <h2 style="margin-top: 30px; color: #ffc107;">🚌 Troco Rodoviário</h2>
+      <p style="opacity: 0.7;">Selecione a Linha:</p>
       <div class="menu-grid">
-        <button class="btn-linha" onclick="iniciarCalc('910 - VOLTA')">910 - VOLTA</button>
-        <button class="btn-linha" onclick="iniciarCalc('910 - IDA')">910 - IDA</button>
-        <button class="btn-linha" onclick="iniciarCalc('921 - VOLTA')">921 - VOLTA</button>
-        <button class="btn-linha" onclick="iniciarCalc('921 - IDA')">921 - IDA</button>
+        <button class="btn-linha" onclick="iniciarCalc('910')">LINHA 910</button>
+        <button class="btn-linha" onclick="iniciarCalc('921')">LINHA 921</button>
       </div>
     </div>
 
     <div id="tela-calculadora">
       <div class="controles-navegacao">
-        <button class="btn-nav" onclick="finalizarAtendimento()">⬅ FINALIZAR</button>
+        <button class="btn-nav" onclick="finalizarAtendimento()">⬅ INÍCIO</button>
         <button class="btn-nav btn-outra" onclick="voltarParaMenu()">+ OUTRA LINHA</button>
       </div>
-      <h3 id="titulo-linha" style="margin: 0 0 10px 0; color: #ffc107; font-size: 16px;"></h3>
+      <h3 id="titulo-linha" style="margin: 0 0 10px 0; color: #ffc107; font-size: 18px;"></h3>
       <div class="grid-tarifas" id="container-botoes"></div>
       <div class="info-total-container">
         <div id="info-total" class="info-total">TOTAL: R$ 0,00</div>
@@ -83,14 +82,13 @@
     let totalAcumulado = 0;
     let valorPendente = 0;
 
-    // AQUI ESTÃO OS VALORES DA 910
     const tarifas910 = [
       { nome: "Per x STS", valor: 35.80 }, 
       { nome: "Per x SVS", valor: 31.05 },
       { nome: "Per x PG", valor: 23.25 }, 
       { nome: "Per x Mon", valor: 18.80 },
       { nome: "Per x Ita", valor: 14.20 }, 
-      { nome: "Ita x Sts", valor: 24.10 }, // NOVO VALOR ADICIONADO
+      { nome: "Ita x Sts", valor: 24.10 },
       { nome: "Ita x Mon", valor: 11.00 },
       { nome: "Mon x STS", valor: 16.60 }, 
       { nome: "Mon x SVS", valor: 13.90 },
@@ -99,7 +97,6 @@
       { nome: "PG x STS", valor: 11.40 }
     ];
 
-    // AQUI ESTÃO OS VALORES DA 921
     const tarifas921 = [
       { nome: "Ita x STS", valor: 24.10 }, 
       { nome: "Ita x SVS", valor: 18.95 },
@@ -113,16 +110,14 @@
     ];
 
     const dadosLinhas = {
-      '910 - VOLTA': tarifas910,
-      '910 - IDA': tarifas910,
-      '921 - IDA': tarifas921,
-      '921 - VOLTA': tarifas921
+      '910': tarifas910,
+      '921': tarifas921
     };
 
     function iniciarCalc(linha) {
       document.getElementById('tela-menu').style.display = 'none';
       document.getElementById('tela-calculadora').style.display = 'block';
-      document.getElementById('titulo-linha').innerText = "Linha: " + linha;
+      document.getElementById('titulo-linha').innerText = "Linha " + linha;
       const container = document.getElementById('container-botoes');
       container.innerHTML = '';
       dadosLinhas[linha].forEach(item => {
@@ -175,7 +170,7 @@
     }
 
     function finalizarAtendimento() {
-      if (confirm("Zerar conta e voltar ao início?")) {
+      if (confirm("Zerar conta e voltar ao menu principal?")) {
         limparTudo();
         document.getElementById('tela-menu').style.display = 'block';
         document.getElementById('tela-calculadora').style.display = 'none';
